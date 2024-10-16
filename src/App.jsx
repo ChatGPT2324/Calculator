@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
 function App() {
-  const symbols = ['+', '-', 'x', '÷', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'C', '=', '←'];
-  const names = ['Addition', 'Subtraction', 'Multiplication', 'Division', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Zero', 'Clear', 'Equals', 'Backspace'];
+  const symbols = ['AC', '%', '←', '÷', '7', '8', '9', 'x', '4', '5', '6', '-', '1', '2', '3', '+', '00', '0', '.', '='];
+const names = ['All Clear', 'Percentage', 'Backspace', 'Division', 'Seven', 'Eight', 'Nine', 'Multiplication', 'Four', 'Five', 'Six', 'Subtraction', 'One', 'Two', 'Three', 'Addition', 'Double Zero', 'Zero', 'Decimal', 'Equals'];
+
   
 
   const [text, setText] = useState("");
@@ -10,15 +11,21 @@ function App() {
   function handleClick(e) {
     const value = e.target.value;
 
-    if (value === 'C') {
+    if (value === 'AC') {
       setText("");
     } else if (value === '=') {
-      try {
+      try{
         const modifiedText = text.replace(/÷/g, '/').replace(/x/g, '*');
-            setText(eval(modifiedText)); // Use eval to calculate the result
+        const result = eval(modifiedText);
+        if (Number.isInteger(result)) {
+          setText(result.toString()); // Show integer as is
+        } else {
+          setText(result.toFixed(2).replace(/\.?0+$/, "")); // Show only two decimals and remove trailing zeroes
+        }
       } catch {
-        setText(text.slice(0, -1)); // Handle invalid expressions
+        setText("Error"); // Handle invalid expressions
       }
+     
     }
     else if (value === '←') {
       setText(text.slice(0, -1))  
